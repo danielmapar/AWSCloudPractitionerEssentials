@@ -10,7 +10,7 @@
         * Each region is a separete geographic area that has multiple isolated locations **known as availability zones**
 
     * Availability zones
-        * One of more discreet datacenters
+        * One or more discreet datacenters
         * Contains redundant power, network, and connectivity
         * House in separete facilities 
 

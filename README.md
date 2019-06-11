@@ -3,6 +3,9 @@
 
 ## Cloud
 
+* Cloud computing
+    * On deamand computing
+
 * Regios 
     * AWS servers located all over the globe
     * Each region is a separete geographic area that has multiple isolated locations **known as availability zones**
@@ -15,12 +18,14 @@
 * Fault-tolerant: System remains available in case part of it fails (CAP theorem)
     * Redundancy 
 
-
 * Security
 
     * The customer decides the region systems will be deployed
     * Ownership of data
     * How do you handle encryption and encryption keys
+    * State of the art eletronic suverllaince, and multi factor access control system
+    * Staffed with 24/7 secutiry guards and access is extremely regulated 
+    * Multiple availability zones covers natural disasters and system failure 
 
 ## Interface
 
@@ -29,7 +34,7 @@
     * AWS Management Console (browser)
     * Software Developer Kits (SDKs)
 
-    * ![aws](./images/1.png)
+    * ![aws](./images/cli.png)
 
     * Each user (IAM) can create Resource Groups
         * A resource group is a group of AWS services (dashboard)
@@ -66,7 +71,7 @@
     * Replicated in the same Availability Zone
 
     * Backup using snapshots
-        * Share snapshots or even copy snapshots to a different aws region (Virginia to Tokyo)
+        * Share snapshots or even copy snapshots to a different AWS region (Virginia to Tokyo)
 
     * Easy and transparent Encryption
         * Encrypt data between EC2 instance and EBS inside Amazon networks without extra cost
@@ -105,7 +110,7 @@
     * Rich security controls
         * None of your data is shared publicly by default 
 
-    * The data stored inside a bucket is replicated at many other facilities inside the AWS region
+    * The data stored inside a bucket can be configure to be replicated at many other regios (cross region replication)
 
     * Common Use Cases
         * Storing application assets
@@ -157,5 +162,160 @@
 
     * A private, virtual network in the AWS Cloud
         * Uses same concepts as on premise networking
+
     * Allows complete control of network configuration
         * Ability to isolate and expouse resources inside VPC
+            * Control IP address spaces 
+            * Subnets
+            * Routing tables
+
+    * Offers several layers of security controls
+        * Ability to allow and deny specific internet and internal traffic 
+        * Routing tables 
+    * Other AWS services deploy into VPC
+        * Services inherent security built into network
+
+    * VPC is a foundational AWS service and integrate with numerous other services
+
+    * ![vpc](./images/vpc.png)
+
+    * Amazon Elastic Computer instances (EC2) are deployed in your Amazon VPC
+    * Same for Amazon Relational Database Service (RDS)
+    
+    * Features
+
+        * VPC defines a IP address space (divided by subnets)
+
+        * Builds upon high availiability of AWS Regions and Availability Zones (AZ)
+            * Amazon VPC lives within a Region
+            * Multiple VPCs per account
+        
+        * Subnets
+            * Used to divide Amazon VPC
+            * Allows Amazon VPC to span multiple Availabilty Zones (Azs)
+
+            * ![vpc2](./images/vpc2.png) 
+        
+        * Route tables
+            * Control traffic between the subnets and the internet 
+            * By default, all subnets within a VPC can communicate with each other
+            * Control traffic going out of the subnets
+        
+        * Public and private subnets
+            * Public has access to the internet
+            * Private has no access to the internet 
+
+        * Internet Gateway (IGW)
+            * To a subnet to be public, we need to attache a internet gateway to the VPC and update the route table of the subnet to send non local traffic to the internet gateway
+            * They also need a public ip address to route to an internet gateway
+            * Allows access to Internet from Amazon VPC
+        
+        * NAT Gateway
+            * Allows private subnet resources to access Internet 
+        
+        * Network Access Control Lists (NACL)
+            * Control access to subnets; stateless  
+
+        * ![example-vpc](./images/example-vpc.png) 
+
+* AWS Security Groups
+
+    * Act as built-in firewalls
+    * Control accessibility to instances 
+
+    * Built-in firewall for your virtual services
+
+    * Full control your instance are
+        * Another method to filter traffic to your instances
+        * Determine how has access to your instance
+            * You would determin a security group role
+
+        * ![security-group](./images/security-group.png) 
+    
+    * `http` is port `80` and `https` is port `443`
+        * To access traffic from anywhere from the internet we may use `0.0.0.0/0`
+    
+    * ![create-sg](./images/create-sg.png) 
+
+# Integrated Services
+
+* Elastic Load Balancer services
+    * Application Load Balancer
+        * Offers all features from Classic Load Balancer plus more
+            * Additional Supported Protocols
+            * Cloud Watch Metrics
+            * Access Logs
+            * Health Checks
+        * ![application-loadbalancer](./images/application-loadbalancer.png) 
+    * Classic Load Balancer
+
+    * ![application-loadbalancer2](./images/application-loadbalancer2.png) 
+        * Use containers to host your micro services and route to those applications from a single load balancer
+        * Application Load Balancer allows you to route different requests to the same instance, but differ the path based on the port.
+        * If you have different ports, you can setup routing rules to distribute traffic traffic to only one desired backend application.
+
+    
+    * Target groups
+        * Because the Application Load Balancer register targets instead of instances, a **target group** is how a target is registered to the load balancer
+            * One instance running many container apps 
+        * When configuring the **listners** for the load balancer, you create **rules** in order to direct how requests received by the load balancer will be routed to the backend target.
+    
+
+    * Listners
+        * A listner is a a process that checks for connection requests, using the protocol and port that you configured. The rules that you define for a listner determine how the load balancer routes requests to the target in one or more target groups.
+
+    * Target Group
+        * Each target group routes requests to one or more registered targets using protocols and port number specified. A target can be registered with multiple target groups. Health checks can be configured on a per target group basis
+
+    * Target
+        * A target is a destination for traffic based on the established listner rules.
+
+    * Listners -> Target Group -> Target 
+
+    * ![application-routing](./images/application-routing.png) 
+
+    * ![application-routing](./images/application-routing2.png)  
+
+    * ![application-routing](./images/application-routing3.png) 
+
+    * ![application-routing](./images/application-routing4.png)
+
+        * You can see the listners for por `80` and `443`
+            * Two containers running inside an EC2 instance
+
+        * We must select at least 2 availability zones where the service is available (two ec2 instances, one at each zone)
+            * Inside the same VPC (can be subnets)
+
+* Auto Scaling 
+
+    * Launch Configuration
+        * What to deploy
+    
+    * Auto Scaling Group
+        * Where to deploy
+    
+    * Auto Scaling Policy
+        * When to deploy
+
+
+* Route 53
+
+    * DNS (Domain Name Service)
+
+    * Create Hosted Zone
+        * Main Domain
+        * Add subdomains 
+
+* Amazon RDS
+
+    * When selecting subnet you are choosing the availability zone it will be deployed 
+
+    * It replicates the db in another availability zone 
+
+* AWD Lambda
+
+    * 6mb limit
+    * 5 min limit 
+    * AWS S3 + CloudWatch + Lambda
+    * Kineses + Lambda
+    * Dynamo DB + Lambda

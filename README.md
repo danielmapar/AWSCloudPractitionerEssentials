@@ -6,7 +6,7 @@
 * Cloud computing
     * On deamand computing
 
-* Regios 
+* Regions 
     * AWS servers located all over the globe
     * Each region is a separete geographic area that has multiple isolated locations **known as availability zones**
 
